@@ -63,3 +63,23 @@ export const login = async (req, res) =>{
      res.status(500).json({message:error.message})
     }
  }
+
+ export const logOut = (req, res) =>{
+   res.cookie("token", "", {
+      expires: new Date(0)
+   })
+   return res.sendStatus(200)
+ }
+
+ export const profile = async (req, res) => {
+const userFound = await  User.findById(req.user.payload.id)
+
+
+   if(!userFound) return res.status(400).json({message:"Usuario no encontrado"})
+   return res.json({
+id:userFound._id,
+username:userFound.username,
+email:userFound.email
+})
+
+ }
